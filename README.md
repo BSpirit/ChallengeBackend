@@ -1,5 +1,50 @@
 # ChallengeBackend
 
+## Requirements
+
+Docker and docker-compose can be used to run the application in your local environnement.
+
+1. Install Docker
+https://docs.docker.com/get-docker/
+
+2. Install Docker compose
+https://docs.docker.com/compose/install/
+
+3. Set environnement variables: .env file must be created at the root of the repo.
+
+.env file content:
+```
+export SECRET_KEY=<a-secret-key>
+export SPOTIFY_CLIENT_ID=<spotify-api-client-id>
+export SPOTIFY_CLIENT_SECRET=<spotify-api-client-secret>
+
+export POSTGRES_DB=postgres
+export POSTGRES_USER=postgres
+export POSTGRES_PASSWORD=postgres
+```
+
+## Run application
+
+1. Build the application
+```
+docker-compose build
+```
+
+2. Run the application
+```
+docker-compose up
+```
+
+3. Run migrations (if necessary, i.e. when the container is running for the first time)
+```
+docker container exec <container-ID> python manage.py migrate
+```
+
+*NB*: The app listens on port 8000. docker-compose should only be used in a dev environnement.
+
+
+# Subject
+
 Your goal is to create an app using the [spotify web api](https://developer.spotify.com/documentation/web-api/). You can make for example a [Flask](https://flask.palletsprojects.com/en/1.1.x/) or [Django rest framework](https://www.django-rest-framework.org/) project, it has to be able to authenticate to Spotify to fetch the new releases. Your job is to add two new features:
 - A way to fetch data from spotify’s new releases API (/v1/browse/new-releases) and persist in a Postgresql DB (mandatory)
 - A route : `/api/artists/` returning a JSON containing informations about artists that have released new tracks recently, from your local copy of today’s spotify’s new releases.
