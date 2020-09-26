@@ -36,6 +36,7 @@ class Command(BaseCommand):
             for album in new_releases:
                 album_obj, _ = Album.objects.get_or_create(
                     name=album['name'],
+                    album_type=album['album_type'],
                     release_date=album['release_date'],
                 )
                 for artist in album['artists']:
