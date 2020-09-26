@@ -10,6 +10,7 @@ class Album(models.Model):
 
     name = models.CharField(max_length=100)
     album_type = models.CharField(choices=ALBUM_TYPE_CHOICE, default='album', max_length=100)
+    release_date = models.DateField()
 
     def __str__(self):
         return f'Album: {self.name}'

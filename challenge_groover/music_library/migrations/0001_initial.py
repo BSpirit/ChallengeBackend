@@ -17,6 +17,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100)),
                 ('album_type', models.CharField(choices=[('a', 'album'), ('s', 'single'), ('c', 'compilation')], default='album', max_length=100)),
+                ('release_date', models.DateField()),
             ],
         ),
         migrations.CreateModel(
