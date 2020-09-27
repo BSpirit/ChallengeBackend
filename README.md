@@ -40,7 +40,17 @@ docker-compose up
 docker container exec <container-ID> python manage.py migrate
 ```
 
+4. To fetch new releases, a custom Django command can be used
+```
+docker container exec <container-ID> python manage.py fetchnewreleases
+```
+
 *NB*: The app listens on port 8000. docker-compose should only be used in a dev environnement.
+
+## Technical choices
+- I decided to use Django Rest Framework (instead of flask) to facilitate the developpement of the REST API part of the project (DRF provides Serialization, Pagination, hyperlinked models, etc.)
+- To fetch the new releases, I decided to develop a Django custom command. Using a command allows more control on when to fetch the data. It can also be automated, using a cronjob, if necessary.
+- `/v1/browse/new-releases` Spotify API doesn't require authorization (only authentification). Which is why I decided to use [client credentials](https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow) flow instead of the [authorization code flow](https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow)
 
 
 # Subject
