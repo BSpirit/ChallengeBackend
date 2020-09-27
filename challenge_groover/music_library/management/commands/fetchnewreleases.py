@@ -10,9 +10,14 @@ from music_library.management.spotify_api_client import SpotifyAPIClient
 
 
 class Command(BaseCommand):
-    help = 'Fetches artists from Spotify API (/v1/browse/new-releases endpoint)'
+    help = 'Fetches data from Spotify API (/v1/browse/new-releases endpoint)'
 
     def handle(self, *args, **options):
+        """
+        The purpose of fetchnewreleases command is to fetch data from the `/v1/browse/new-releases` spotify API 
+        endpoint and save the data (Artists and their related albums) in the database.
+        """
+
         app_config = apps.get_app_config('music_library')
         spotify_api_client = SpotifyAPIClient(
             app_config.SPOTIFY_CLIENT_ID, 
@@ -32,6 +37,15 @@ class Command(BaseCommand):
             raise CommandError('Could not retrieve new releases: ' + str(e))
 
         self.stdout.write('Updating database')
+        self._save_new_releases(new_releases)
+
+    def _save_new_releases(self, new_releases):
+        """
+        Saves new_releases content into the database.
+
+        :param new_releases: Output of SpotifyAPIClient.request_new_releases method.
+        :type new_releases: dict
+        """
         with transaction.atomic():
             for album in new_releases:
                 album_obj, _ = Album.objects.get_or_create(
